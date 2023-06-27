@@ -3,3 +3,6 @@
 
 # 以下のフォルダは追記対象外
 untrack
+
+# nohup.out
+nohup.out
