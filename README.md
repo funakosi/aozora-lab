@@ -19,9 +19,16 @@
 - [感情分析v4 → data/all_score_0630.csv (1,036)](感情分析v4.ipynb)
   - 感情スコア取得
   - [setitment_analysis_v4.py](setitment_analysis_v4.py)
-  - ipynb形式をpy形式にしたもの(nohupとか使いたかったので)
+  - ipynb形式をpy形式にしたもの(nohup実行用)
 - [特異値分解](特異値分解v1.ipynb)
   - PCA,SVD,NMFで行列分解したもの
   - [NMFで分解](NMF.ipynb)
+  - [FastICA](次元削除v1.ipynb)
+- クラスタリング
+  - [KernelKMeans](KernelKMeans.ipynb)
+  - [KShape](KShape.ipynb)
+  - [階層クラスタリング](PairwiseClustering.ipynb)
+  - [KMeans,KMedoids](クラスタリングv1.ipynb)
 - 時系列専用のクラスタリング
   - [TimeSeriesKMeans](TimeSeriesKMeans.ipynb)
+- [self-organizing map](SOM.ipynb)

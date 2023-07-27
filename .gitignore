@@ -6,3 +6,8 @@ untrack
 
 # nohup.out
 nohup.out
+
+# 以下のファイルは対象外
+*.hdf5
+*.npy
+*.png
