@@ -2,6 +2,9 @@
 
 ## 青空文庫を使用した感情分析
 
+- 先行研究
+  - [The emotional arcs of stories are dominated by six basic shapes](https://arxiv.org/pdf/1606.07772.pdf)
+  - [物語展開を考慮した小説データからの表紙の自動生成](https://db-event.jpn.org/deim2019/post/papers/350.pdf)
 - [青空文庫アクセスランキング](青空文庫データクレンジング.ipynb)
 - [青空文庫対象 → data/target.csv(3,422)](青空文庫対象.ipynb)
   - 青空文庫全作品：18,798
