@@ -19,10 +19,13 @@
   - スコアが取得できていない作品を抽出(153件)
 - 行数が500行以上に絞り込み → data/target2.csv(1,050)
   - target.csv or target2.csv length >= 500
-- [感情分析v4 → data/all_score_0630.csv (1,036)](感情分析v4.ipynb)
+- [感情分析v4](感情分析v4.ipynb)
   - 感情スコア取得
   - [setitment_analysis_v4.py](setitment_analysis_v4.py)
   - ipynb形式をpy形式にしたもの(nohup実行用)
+  - 成果物ファイル
+    - [data/all_score_0630.csv (1,036)](data/all_score_0630.csv)
+    - [data/all_score_0731.csv (1,050)](data/all_score_0731.csv)
 - [特異値分解](特異値分解v1.ipynb)
   - PCA,SVD,NMFで行列分解したもの
   - [NMFで分解](NMF.ipynb)
