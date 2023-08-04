@@ -47,13 +47,14 @@ Returns:
     max logit
     max prediction
 """
-def get_score(tokenizer, model, text):
+def get_score(tokenizer, model, text, truncation=True):
     # 0: NEUTRAL  -> 0
     # 1: NEGATIVE -> -1
     # 2: POSITIVE -> 1
     coef_array = [0, -1, 1]
     # text: 文字列型を想定
-    batch = tokenizer(text, padding=True, return_tensors='pt')
+    # batch = tokenizer(text, padding=True, return_tensors='pt')
+    batch = tokenizer(text, padding=True, truncation=truncation, return_tensors='pt')
 
     with torch.no_grad():
         output = model(**batch)
@@ -73,11 +74,11 @@ Arg:
 Returns:
     data frame
 """
-def get_novel_score(tokenizer, model, file_path):
+def get_novel_score(tokenizer, model, file_path, truncation=True):
     df = pd.read_csv(file_path)
     logit_score, pred_score = [], []
     for i, text in enumerate(tqdm(df['text'])):
-        logit, pred = get_score(tokenizer, model, text)
+        logit, pred = get_score(tokenizer, model, text, truncation)
         logit_score.append(logit)
         pred_score.append(pred)
 

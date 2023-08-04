@@ -16,8 +16,14 @@
 - [ターゲットファイル更新  → data/target2.csv(3,422)](update_target.ipynb)
   - スコアファイルパス列追加
   - NaN→空白へ変換
-  - スコアが取得できていない作品を抽出(153件)
-- 行数が500行以上に絞り込み → data/target2.csv(1,050)
+  - スコアが取得できていない作品を抽出(153件→0件)
+    - zipファイルに複数ファイルが存在する([対処法](https://stackoverflow.com/questions/44575251/reading-multiple-files-contained-in-a-zip-file-with-pandas))
+    - 本文内にカンマが含まれている(pd.read_csvでエラー)
+      - 対処法: エラーとなる作品は「@」を区切り文字として回避
+    - 以下の2作品は青空文庫の書式となっていなかったので，最低限の編集を施しエラーを回避
+      - 横光利一 時間
+      - 横光利一 鳥
+- 行数が500行以上に絞り込み → data/target2.csv(1,050→1,149)
   - target.csv or target2.csv length >= 500
 - [感情分析v4](感情分析v4.ipynb)
   - 感情スコア取得
@@ -26,6 +32,7 @@
   - 成果物ファイル
     - [data/all_score_0630.csv (1,036)](data/all_score_0630.csv)
     - [data/all_score_0731.csv (1,050)](data/all_score_0731.csv)
+    - [data/all_score_0805.csv (1,149) *latest](data/all_score_0805.csv)
 - [特異値分解](特異値分解v1.ipynb)
   - PCA,SVD,NMFで行列分解したもの
   - [NMFで分解](NMF.ipynb)
