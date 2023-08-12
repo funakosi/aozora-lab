@@ -3,8 +3,8 @@
 ## 青空文庫を使用した感情分析
 
 - 先行研究
-  - [The emotional arcs of stories are dominated by six basic shapes](https://arxiv.org/pdf/1606.07772.pdf)
-  - [物語展開を考慮した小説データからの表紙の自動生成](https://db-event.jpn.org/deim2019/post/papers/350.pdf)
+  - [1. The emotional arcs of stories are dominated by six basic shapes](https://arxiv.org/pdf/1606.07772.pdf)
+  - [2. 物語展開を考慮した小説データからの表紙の自動生成](https://db-event.jpn.org/deim2019/post/papers/350.pdf)
 - [青空文庫アクセスランキング](青空文庫データクレンジング.ipynb)
 - [青空文庫対象 → data/target.csv(3,422)](青空文庫対象.ipynb)
   - 青空文庫全作品：18,798
@@ -29,6 +29,7 @@
   - 感情スコア取得
   - [setitment_analysis_v4.py](setitment_analysis_v4.py)
   - ipynb形式をpy形式にしたもの(nohup実行用)
+  - [モデルの比較.ipynb](モデルの比較.ipynb)
   - 成果物ファイル
     - [data/all_score_0630.csv (1,036)](data/all_score_0630.csv)
     - [data/all_score_0731.csv (1,050)](data/all_score_0731.csv)
@@ -45,3 +46,16 @@
 - 時系列専用のクラスタリング
   - [TimeSeriesKMeans](TimeSeriesKMeans.ipynb)
 - [self-organizing map](SOM.ipynb)
+- その他
+  - [感情曲線取得.ipynb](感情曲線取得.ipynb)
+    - 小説の取得，クレンジング，スコア取得までを試せるコード
+
+## モデルの比較
+
+先行研究2.の筆者から共有していただいた３小説（フランダースの犬，銀河鉄道の夜，押絵と旅する男）の感情スコア値と，各モデルで取得した感情スコア値を[PyTS DTW](https://pyts.readthedocs.io/en/stable/generated/pyts.metrics.dtw.html#pyts.metrics.dtw)で比較したもの．
+
+|                                             | 作品名           |              |                |        |        |
+|---------------------------------------------|------------------|--------------|----------------|--------|--------|
+| モデル                                      | フランダースの犬 | 銀河鉄道の夜 | 押絵と旅する男 | 合計   | 平均   |
+| koheiduck/bert-japanese-finetuned-sentiment | 8.5              | 8.273        | 18.081         | 34.854 | 11.618 |
+| A-Funakoshi/sample-text-classification-bert | 12.394           | 10.259       | 9.001          | 31.654 | 10.551 |
