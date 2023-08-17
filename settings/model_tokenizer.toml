@@ -1,0 +1,18 @@
+# toml形式
+# 必要に応じて pip install toml 実行
+
+[pattern1]
+tokenizer = 'koheiduck/bert-japanese-finetuned-sentiment'
+model = 'koheiduck/bert-japanese-finetuned-sentiment'
+score_folder = 'koheiduck_bert-japanese-finetuned-sentiment'
+
+[pattern2]
+tokenizer = 'A-Funakoshi/bert-finetuned-multilingual-sentiments'
+model = 'A-Funakoshi/bert-finetuned-multilingual-sentiments'
+score_folder = 'bert-finetuned-multilingual-sentiments'
+
+[pattern3]
+tokenizer = 'A-Funakoshi/bert-base-japanese-v3-wrime-sentiment'
+model = 'A-Funakoshi/bert-base-japanese-v3-wrime-sentiment'
+score_folder = 'bert-base-japanese-v3-wrime-sentiment'
+

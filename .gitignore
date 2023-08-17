@@ -11,3 +11,7 @@ nohup.out
 *.hdf5
 *.npy
 *.png
+
+# Pythonのキャッシュファイル
+__pychache__
+*.pyc

@@ -47,15 +47,24 @@
   - [TimeSeriesKMeans](TimeSeriesKMeans.ipynb)
 - [self-organizing map](SOM.ipynb)
 - その他
+  - settingsフォルダ以下に各種設定ファイルを配置
+  - libraryフォルダ以下で関数をモジュール化
+    - dtw.py .. オライリー「実践　時系列解析」に記載されていたdtw関数を定義
+    - preprocess.py .. データの前処理用関数
+    - score.py .. スコア取得用関数
+    - tool .. 設定ファイル読み込み等の関数
   - [感情曲線取得.ipynb](感情曲線取得.ipynb)
     - 小説の取得，クレンジング，スコア取得までを試せるコード
+  - [感情曲線取得v2.ipynb](感情曲線取得v2.ipynb)
+    - モデルの比較で使用している３小説の感情曲線を表示
 
 ## モデルの比較
 
-先行研究2.の筆者から共有していただいた３小説（フランダースの犬，銀河鉄道の夜，押絵と旅する男）の感情スコア値と，各モデルで取得した感情スコア値を[PyTS DTW](https://pyts.readthedocs.io/en/stable/generated/pyts.metrics.dtw.html#pyts.metrics.dtw)で比較したもの．
+先行研究2.の筆者から共有していただいた３小説（フランダースの犬，銀河鉄道の夜，押絵と旅する男）の感情スコア値と，各モデルで取得した感情スコア値を[PyTS DTW](https://pyts.readthedocs.io/en/stable/generated/pyts.metrics.dtw.html#pyts.metrics.dtw)で比較したもの．モデル名はHugging Faceで公開されているモデルの名前．
 
-|                                             | 作品名           |              |                |        |        |
-|---------------------------------------------|------------------|--------------|----------------|--------|--------|
-| モデル                                      | フランダースの犬 | 銀河鉄道の夜 | 押絵と旅する男 | 合計   | 平均   |
-| koheiduck/bert-japanese-finetuned-sentiment | 8.5              | 8.273        | 18.081         | 34.854 | 11.618 |
-| A-Funakoshi/sample-text-classification-bert | 12.394           | 10.259       | 9.001          | 31.654 | 10.551 |
+|                                                    | 作品名           | 　           | 　             | 　   | 　   |
+|----------------------------------------------------|------------------|--------------|----------------|------|------|
+| モデル                                             | フランダースの犬 | 銀河鉄道の夜 | 押絵と旅する男 | 合計 | 平均 |
+| koheiduck/bert-japanese-finetuned-sentiment        | 8.5              | 8.3          | 18.1           | 34.9 | 11.6 |
+| A-Funakoshi/bert-finetuned-multilingual-sentiments | 9.6              | 9.3          | 12.2           | 31.1 | 10.4 |
+| A-Funakoshi/bert-base-japanese-v3-wrime-sentiment  | 7.95             | 7.19         | 19.2           | 34.3 | 11.4 |
