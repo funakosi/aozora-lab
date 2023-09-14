@@ -15,3 +15,7 @@ nohup.out
 # Pythonのキャッシュファイル
 __pychache__
 *.pyc
+
+# fine tuningのチェックポイント等は対象外
+finetune_result*
+result_2023*

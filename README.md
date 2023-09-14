@@ -34,6 +34,11 @@
     - [data/all_score_0630.csv (1,036)](data/all_score_0630.csv)
     - [data/all_score_0731.csv (1,050)](data/all_score_0731.csv)
     - [data/all_score_0805.csv (1,149) *latest](data/all_score_0805.csv)
+- FineTuning
+  - wrimeデータを使用したfine tuning
+    - [FineTuning_v1.ipynb](FineTuning_v1.ipynb) .. 試行錯誤用
+    - [FineTuning_v1.py](FineTuning_v1.py) .. バックグラウンド実行用
+    - [finetune.sh](finetune.sh) .. バックグラウンド実行用シェル
 - [特異値分解](特異値分解v1.ipynb)
   - PCA,SVD,NMFで行列分解したもの
   - [NMFで分解](NMF.ipynb)
