@@ -19,3 +19,6 @@ __pychache__
 # fine tuningのチェックポイント等は対象外
 finetune_result*
 result_2023*
+
+# オープンハウス用のコード
+Openhouse_*
