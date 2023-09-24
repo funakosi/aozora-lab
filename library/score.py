@@ -35,7 +35,8 @@ def get_score(tokenizer, model, text, truncation=True):
     # coef_array = [0, -1, 1]
     coef_array = get_coef(model)
     # text: 文字列型を想定
-    batch = tokenizer(text, padding=True, truncation=truncation, return_tensors='pt')
+    # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    batch = tokenizer(text, padding=True, truncation=truncation, return_tensors='pt')#.to(device)
     
     with torch.no_grad():
         output = model(batch['input_ids'], attention_mask=batch['attention_mask'])
