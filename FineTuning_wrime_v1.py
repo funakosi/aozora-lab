@@ -149,9 +149,9 @@ def get_hyperparam_str(index, param):
 # %%
 # ハイパーパラメータ一覧を読み込む
 import pandas as pd
-# param_path = 'data/hyper_parameters.csv'       # 全部
+param_path = 'data/hyper_parameters.csv'       # 全部
 # param_path = 'data/hyper_parameters_0-23.csv'  # 9/23 15:50
-param_path = 'data/hyper_parameters_24_119.csv'     # 9/23 20:25
+# param_path = 'data/hyper_parameters_24_119.csv'     # 9/23 20:25
 params_df = pd.read_csv(param_path, index_col=0)
 target_params = params_df[params_df['target']]
 
@@ -217,7 +217,7 @@ def get_train_arg(output_dir, hyper_parameter):
         log_level="error",                                    # ログレベル
         fp16=True,                                            # 量子化
         lr_scheduler_type=hyper_parameter['type'],            # "constant", "linear", "cosine"
-        optim='adafactor',
+        # optim='adafactor',
     )
     return args
 
