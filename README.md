@@ -35,7 +35,7 @@
     - [data/all_score_0731.csv (1,050)](data/all_score_0731.csv)
     - [data/all_score_0805.csv (1,149) *latest](data/all_score_0805.csv)
 - FineTuning
-  - wrimeデータを使用したfine tuning
+  - wrimeデータを使用したfinetuning
     - [FineTuning_v1.ipynb](FineTuning_v1.ipynb) .. 試行錯誤用
     - [FineTuning_v1.py](FineTuning_v1.py) .. バックグラウンド実行用
     - [finetune.sh](finetune.sh) .. バックグラウンド実行用シェル
@@ -43,6 +43,11 @@
     - [FineTuning_wrime_v1.py](FineTuning_wrime_v1.ipynb)
     - [finetune_make_paramlist.ipynb](finetune_make_paramlist.ipynb) .. パラメータリスト作成用
       - data/hyper_parametersxxx.csv .. 作成されたリストやテスト用に編集したもの
+  - wrimeデータを使用したfinetuning(optuna使用)
+    - [finetuning_wrime_01_base.ipynb](finetuning_wrime_01_base.ipynb) .. ベースライン
+    - [finetuning_wrime_02_optuna.ipynb](finetuning_wrime_02_optuna.ipynb) .. パラメータ最適化(試行錯誤用)
+    - [finetuning_wrime_02_optuna.py](finetuning_wrime_02_optuna.py) .. パラメータ最適化(実行用)
+    - [finetuning_wrime_03_optuna_bestrun.ipynb](finetuning_wrime_03_optuna_bestrun.ipynb) .. パラメータの最適な組み合わせでfinetuning
 - [特異値分解](特異値分解v1.ipynb)
   - PCA,SVD,NMFで行列分解したもの
   - [NMFで分解](NMF.ipynb)
