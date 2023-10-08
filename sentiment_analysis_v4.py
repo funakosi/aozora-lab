@@ -1,152 +1,118 @@
 # 感情分析v4
-# スコア取得を関数化
 
 # ライブラリ
-
 # %%
 import os
-import sys
-import glob
-import shutil
+import datetime
 import numpy as np
 from tqdm.notebook import tqdm
 import pandas as pd
 from pathlib import Path
+import japanize_matplotlib
 import matplotlib.pyplot as plt
 
-# %%
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from transformers import pipeline
 import torch
 import torch.nn.functional as F
 
-# %%
-# Goole Colab環境か判断
-# ローカル環境とColabo環境の両方で動作させたい(そのうち使う予定)
-moduleList = sys.modules
-ENV_COLAB = False
-if 'google.colab' in moduleList:
-    print("google_colab")
-    ENV_COLAB = True
-else:
-    print("Not google_colab")
-if ENV_COLAB:
-    print("Execute in google_colab")
-
-# %% [markdown]
-# ## 関数定義
+from library import tool
+from library import preprocess
+from library import score
 
 # %%
-# スコア取得関数
-"""
-Arg:
-    tokenizer
-    model
-    text: text(one line)
-Returns:
-    max logit
-    max prediction
-"""
-def get_score(tokenizer, model, text, truncation=True):
-    # 0: NEUTRAL  -> 0
-    # 1: NEGATIVE -> -1
-    # 2: POSITIVE -> 1
-    coef_array = [0, -1, 1]
-    # text: 文字列型を想定
-    # batch = tokenizer(text, padding=True, return_tensors='pt')
-    batch = tokenizer(text, padding=True, truncation=truncation, return_tensors='pt')
-
-    with torch.no_grad():
-        output = model(**batch)
-        prediction = F.softmax(output.logits, dim=1)
-        label = torch.max(output.logits, dim=1)
-        value = label.values.item()
-        index = label.indices.item()
-    logit_value = value * coef_array[index]
-    pred_value = torch.max(prediction).item() * coef_array[index]
-    return logit_value, pred_value
+# GPUチェック
+tool.is_cuda_available()
 
 # %%
-# 小説のスコアを取得する関数
-"""
-Arg:
-    file_path
-Returns:
-    data frame
-"""
-def get_novel_score(tokenizer, model, file_path, truncation=True):
-    df = pd.read_csv(file_path)
-    logit_score, pred_score = [], []
-    for i, text in enumerate(tqdm(df['text'])):
-        logit, pred = get_score(tokenizer, model, text, truncation)
-        logit_score.append(logit)
-        pred_score.append(pred)
+# 設定ファイルを読み込み
+model_settings = tool.ReadModelTokenizerTome('./settings/model_tokenizer.toml')
 
-    df['logit_score'] = logit_score
-    df['pred_score'] = pred_score
-    return df
+# モデルやトークナイザーの選択
+PATTERN = 'pattern2'
+
+model_settings.read(PATTERN)
+print(model_settings.get_str())
+
+#  モデル取得
+# %%
+print(model_settings.tokenizer, model_settings.model)
+tokenizer = AutoTokenizer.from_pretrained(model_settings.tokenizer)
+model = AutoModelForSequenceClassification.from_pretrained(model_settings.model)
+
+# 小説のスコア取得
+# %%
+TARGET_PATH = 'data/target2.csv'
+
+target = pd.read_csv(TARGET_PATH, index_col=0)
+print('全部:',target.shape)
+print('対象:',target[target['対象']].shape)
+print('len>=500:',target[target['length']>=500].shape)
 
 # %%
-# 指定されたwindowサイズで感情スコアの平均値を取得
-def get_score_mean(scores, window_size=10, score_mean_num=100):
-    score_mean = []
-    slide = int((len(scores) - window_size - 1) / 99)
-    for n in range(score_mean_num):
-        start = slide * n
-        if n == score_mean_num - 1:
-            end = len(scores) - 1
-        else:
-            end = start + window_size
-        score_mean.append(np.mean(scores[start:end]))
-        # print(f'{n}:len(scores):{len(scores)},st:{start},ed:{end},{scores[end]}{np.array(scores)[-1]}')
-    return score_mean
+# すべての小説のスコアを取得
+def get_all_scores(target, force=False, test=True):
+    for i, (_, row_data) in enumerate(target.iterrows()):
+        try:
+            print(f'{i}: {row_data["氏名"]} {row_data["作品名"]} {row_data["テキストファイルパス"]}')
+            if row_data['対象'] and os.path.isfile(row_data['テキストファイルパス']):
+                # スコアファイルなし or 強制フラグ:Trueの場合，スコア取得
+                if not os.path.isfile(row_data['スコアファイルパス']) or force:
+                    df = score.get_novel_score(tokenizer, model, row_data['テキストファイルパス'])
+                    df.to_csv(row_data['スコアファイルパス'])
+            else:
+                print('skip data')
+        except Exception as e:
+            print(e)
+        # テストフラグ:Trueなら1件のみ取得してループを抜ける
+        if test:
+            break
 
 # %%
-# スコアを0-1に規格化
-def score_normalize(scores):
-    return (scores - np.min(scores)) / (np.max(scores) - np.min(scores))
-
-# %% [markdown]
-# ## モデル取得
+# すべての小説のスコアを取得
+get_all_scores(target, force=True, test=False)
 
 # %%
-tokenizer = AutoTokenizer.from_pretrained("koheiduck/bert-japanese-finetuned-sentiment")
-model = AutoModelForSequenceClassification.from_pretrained("koheiduck/bert-japanese-finetuned-sentiment")
-
-# %% [markdown]
-# ### 動作確認
-
-# %%
-# 動作確認
-nlp = pipeline('sentiment-analysis',model=model,tokenizer=tokenizer)
-print(nlp("私はとっても幸せ"))
-print(nlp("私はとっても不幸"))
-
-# %% [markdown]
-# ## 小説のスコア取得
-
-# %%
-target = pd.read_csv('data/target2.csv', index_col=0)
-target.head(2)
-
-# %%
-print(target.shape)
-print(target[target['対象']].shape)
-
-# %%
-for i, (_, row_data) in enumerate(target.iterrows()):
-    try:
-        print(f'{i}: {row_data["氏名"]} {row_data["作品名"]} {row_data["テキストファイルパス"]}')
-        if row_data['対象'] and os.path.isfile(row_data['テキストファイルパス']):
-            if not os.path.isfile(row_data['スコアファイルパス']):
-                df = get_novel_score(tokenizer, model, row_data['テキストファイルパス'])
-                df.to_csv(row_data['スコアファイルパス'])
-        else:
-            print('skip data')
-    except Exception as e:
-        print(e)
+# 全スコアを取得
+def get_all_score(list_path, line_num=500, log=False):
+    target = pd.read_csv(list_path, index_col=0)
+    target = target[~np.isnan(target['length'])] # 欠損データは対象外
+    file_exists = [os.path.isfile(f) for f in target['スコアファイルパス']] # ファイル有無
+    target = target[file_exists] # スコアファイルが存在するものだけが対象
+    target = target[target['length'] >= line_num] # 文の総数がline_num以上
+    
+    target_score = {}
+    for i, (_, data) in enumerate(target.iterrows()):
+        score_path = data['スコアファイルパス']
+        exist = os.path.isfile(score_path);
+        if log:
+            print(exist, data.name, data['氏名'], data['作品名'], score_path, data['length'])
+        if not exist:
+            continue
+        mt = datetime.datetime.fromtimestamp(os.path.getmtime(score_path)) # 更新日付取得
+        if mt.month != 10:  # 仮
+            continue
+        print(score_path, mt)
+        df = pd.read_csv(score_path)
+        window_size = int(df.shape[0] / 5)
+        logit_score_mean = score.get_score_mean(df['logit_score'], window_size=window_size)
+        logit_score_norm = score.score_normalize(logit_score_mean)
+        target_score[data.name] = logit_score_norm.tolist() # index:スコア値
+    
+    return target_score
 
 # %%
+# 全スコア
+all_score = get_all_score(TARGET_PATH)
+print('len(all_score):', len(all_score))
 
+# 取得したスコア値をPandasのDataFrame形式に変換する
+columns = ['S{:02}'.format(i) for i in range(100)]
+df_score = pd.DataFrame.from_dict(all_score, orient='index', columns=columns)
+df_score
 
+# %%
+# スコア値を保存
+save_path = 'data/all_score_1008.csv'
+df_score.to_csv(save_path) # 必要に応じて実行
 
