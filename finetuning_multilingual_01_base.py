@@ -101,9 +101,11 @@ def compute_metrics(pred):
 # epoch: 100, early stopping
 # 訓練の実行
 from transformers import TrainingArguments
+# 保存ディレクトリ
+save_dir = f'bert-finetuned-multilingual-sentiments-base'
 
 training_args = TrainingArguments(
-    output_dir="output_multilingual",  # 結果の保存フォルダ
+    output_dir=save_dir,  # 結果の保存フォルダ
     per_device_train_batch_size=32,  # 訓練時のバッチサイズ
     per_device_eval_batch_size=32,  # 評価時のバッチサイズ
     learning_rate=2e-5,  # 学習率
@@ -135,29 +137,23 @@ trainer = Trainer(
 trainer.train()
 
 # %%
+# モデルの保存
+trainer.save_model(save_dir)
+tokenizer.save_pretrained(save_dir)
+# 履歴の保存
 history_df = pd.DataFrame(trainer.state.log_history)
 history_df.to_csv('base_line/mullingual_baseline_history.csv')
 
 # %%
-from sklearn.linear_model import LinearRegression
-
-def linear_regression(history_df):
-    y = history_df['eval_loss'].dropna().values
-    x = np.arange(len(y)).reshape(-1, 1)
-    linear = LinearRegression().fit(x, y)
-    return linear
-
-# %%
 import matplotlib.pyplot as plt
 
-def show_graph(df, suptitle, regression, output='output.png'):
+def show_graph(df, suptitle, output='output.png'):
     suptitle_size = 23
     graph_title_size = 20
     legend_size = 18
     ticks_size = 13
     # 学習曲線
-    fig = plt.figure(figsize=(20, 5))
-    # plt.suptitle(','.join([f'{e}: {parameters[e]}' for e in parameters.keys()]), fontsize=suptitle_size)
+    plt.figure(figsize=(20, 5))
     plt.suptitle(suptitle, fontsize=suptitle_size)
     # Train Loss
     plt.subplot(131)
@@ -167,15 +163,11 @@ def show_graph(df, suptitle, regression, output='output.png'):
     plt.yticks(fontsize=ticks_size)
     # Validation Loss
     plt.subplot(132)
-    reg_str = f'$y={round(regression.coef_[0],5)}*x+{round(regression.intercept_,3)}$'
     plt.title(f'Val Loss', fontsize=graph_title_size)
     y = df['eval_loss'].dropna().values
     x = np.arange(len(y)).reshape(-1, 1)
-    pred = regression.coef_ * x.ravel() + regression.intercept_  # 線形回帰直線
     plt.plot(y, color='tab:orange', label='val')
-    plt.plot(pred, color='green', label='pred')
     plt.legend(fontsize=legend_size)
-    plt.xlabel(reg_str, fontsize=ticks_size)
     plt.yticks(fontsize=ticks_size)
     # Accuracy/F1
     plt.subplot(133)
@@ -191,5 +183,4 @@ def show_graph(df, suptitle, regression, output='output.png'):
 # %%
 # 結果を表示
 suptitle = 'batch:32, lr:2e-5, type:constant'
-reg = linear_regression(history_df)
-show_graph(history_df, suptitle, reg, 'base_line/mullingual_baseline_output.png')
+show_graph(history_df, suptitle, 'base_line/mullingual_baseline_output.png')

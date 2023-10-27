@@ -30,3 +30,18 @@ score_folder = 'bert-finetuned-multilingual-sentiments-adamw'
 tokenizer = 'A-Funakoshi/bert-finetuned-multilingual-sentiments-adafactor'
 model = 'A-Funakoshi/bert-finetuned-multilingual-sentiments-adafactor'
 score_folder = 'bert-finetuned-multilingual-sentiments-adafactor'
+
+[pattern7]
+tokenizer = 'A-Funakoshi/bert-multilingual-sentiments-base'
+model = 'A-Funakoshi/bert-multilingual-sentiments-base'
+score_folder = 'bert-multilingual-sentiments-base'
+
+[pattern8]
+tokenizer = 'A-Funakoshi/bert-wrime-base'
+model = 'A-Funakoshi/bert-wrime-base'
+score_folder = 'bert-wrime-base'
+
+[pattern9]
+tokenizer = 'A-Funakoshi/bert-base-japanese-v3-wrime-v2'
+model = 'A-Funakoshi/bert-base-japanese-v3-wrime-v2'
+score_folder = 'bert-base-japanese-v3-wrime-v2'

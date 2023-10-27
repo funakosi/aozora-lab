@@ -11,6 +11,7 @@ nohup.out
 *.hdf5
 *.npy
 *.png
+*.bin
 
 # Pythonのキャッシュファイル
 __pychache__
