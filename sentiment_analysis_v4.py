@@ -94,7 +94,7 @@ def get_all_score(list_path, line_num=500, log=False):
             continue
         print(score_path, mt)
         df = pd.read_csv(score_path)
-        window_size = int(df.shape[0] / 5)
+        window_size = int(df.shape[0] / 7)
         logit_score_mean = score.get_score_mean(df['logit_score'], window_size=window_size)
         logit_score_norm = score.score_normalize(logit_score_mean)
         target_score[data.name] = logit_score_norm.tolist() # index:スコア値
@@ -113,6 +113,6 @@ df_score
 
 # %%
 # スコア値を保存
-save_path = 'data/all_score_1008.csv'
+save_path = 'data/all_score_1027.csv'
 df_score.to_csv(save_path) # 必要に応じて実行
 

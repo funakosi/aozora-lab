@@ -2,46 +2,31 @@
 # 必要に応じて pip install toml 実行
 
 [pattern1]
+# 公開されている事前学習済みモデル
 tokenizer = 'koheiduck/bert-japanese-finetuned-sentiment'
 model = 'koheiduck/bert-japanese-finetuned-sentiment'
 score_folder = 'koheiduck_bert-japanese-finetuned-sentiment'
 
 [pattern2]
-tokenizer = 'A-Funakoshi/bert-finetuned-multilingual-sentiments'
-model = 'A-Funakoshi/bert-finetuned-multilingual-sentiments'
-score_folder = 'bert-finetuned-multilingual-sentiments'
-
-[pattern3]
-tokenizer = 'A-Funakoshi/bert-base-japanese-v3-wrime-sentiment'
-model = 'A-Funakoshi/bert-base-japanese-v3-wrime-sentiment'
-score_folder = 'bert-base-japanese-v3-wrime-sentiment'
-
-[pattern4]
-tokenizer = 'A-Funakoshi/bert-base-japanese-v3-wrime-v1'
-model = 'A-Funakoshi/bert-base-japanese-v3-wrime-v1'
-score_folder = 'bert-base-japanese-v3-wrime-v1'
-
-[pattern5]
-tokenizer = 'A-Funakoshi/bert-finetuned-multilingual-sentiments-adamw'
-model = 'A-Funakoshi/bert-finetuned-multilingual-sentiments-adamw'
-score_folder = 'bert-finetuned-multilingual-sentiments-adamw'
-
-[pattern6]
-tokenizer = 'A-Funakoshi/bert-finetuned-multilingual-sentiments-adafactor'
-model = 'A-Funakoshi/bert-finetuned-multilingual-sentiments-adafactor'
-score_folder = 'bert-finetuned-multilingual-sentiments-adafactor'
-
-[pattern7]
+# multilingual-sentimentデータセットを使って訓練したもの(探索なし)
 tokenizer = 'A-Funakoshi/bert-multilingual-sentiments-base'
 model = 'A-Funakoshi/bert-multilingual-sentiments-base'
 score_folder = 'bert-multilingual-sentiments-base'
 
-[pattern8]
+[pattern3]
+# multilingual-sentimentデータセットを使って訓練したもの(探索あり,adamw)
+tokenizer = 'A-Funakoshi/bert-finetuned-multilingual-sentiments-adamw'
+model = 'A-Funakoshi/bert-finetuned-multilingual-sentiments-adamw'
+score_folder = 'bert-finetuned-multilingual-sentiments-adamw'
+
+[pattern4]
+# wrimeデータセットを使って訓練したもの(探索なし)
 tokenizer = 'A-Funakoshi/bert-wrime-base'
 model = 'A-Funakoshi/bert-wrime-base'
 score_folder = 'bert-wrime-base'
 
-[pattern9]
+[pattern5]
+# wrimeデータセットを使って訓練したもの(探索あり)
 tokenizer = 'A-Funakoshi/bert-base-japanese-v3-wrime-v2'
 model = 'A-Funakoshi/bert-base-japanese-v3-wrime-v2'
 score_folder = 'bert-base-japanese-v3-wrime-v2'

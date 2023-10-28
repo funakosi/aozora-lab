@@ -33,7 +33,16 @@
   - 成果物ファイル
     - [data/all_score_0630.csv (1,036)](data/all_score_0630.csv)
     - [data/all_score_0731.csv (1,050)](data/all_score_0731.csv)
-    - [data/all_score_0805.csv (1,149) *latest](data/all_score_0805.csv)
+    - [data/all_score_0805.csv (1,149)](data/all_score_0805.csv)
+    - [data/all_score_1027.csv (1,149) *latest](data/all_score_1027.csv)
+- FineTuning(最終版)
+  - [pattern1: 公開されている事前学習済みモデル](https://huggingface.co/koheiduck/bert-japanese-finetuned-sentiment)
+  - wrimeデータを使用したfinetuning
+    - [pattern2: ベースモデル(ハイパーパラメータ固定)](finetuning_wrime_01_base.py)
+    - [pattern3: Optunaを使用してハイパーパラメータを探索したモデル](finetuning_wrime_02_optuna.py)
+  - multilingual-sentimentsデータを使用したfinetuning
+    - [pattern4:ベースモデル(ハイパーパラメータ固定)](finetuning_multilingual_01_base.py)
+    - [pattern5:Optunaを使用してハイパーパラメータを探索したモデル](finetuning_multilingual_02_adamw.py)
 - FineTuning
   - wrimeデータを使用したfinetuning
     - [FineTuning_v1.ipynb](FineTuning_v1.ipynb) .. 試行錯誤用
@@ -83,12 +92,11 @@
 
 先行研究2.の筆者から共有していただいた３小説（フランダースの犬，銀河鉄道の夜，押絵と旅する男）の感情スコア値と，各モデルで取得した感情スコア値を[PyTS DTW](https://pyts.readthedocs.io/en/stable/generated/pyts.metrics.dtw.html#pyts.metrics.dtw)で比較したもの．モデル名はHugging Faceで公開されているモデルの名前．
 
-| モデル                                                       | ハイパーパラメータ最適化 | 作品名           | 　           | 　             | 　   | 　   |
-|--------------------------------------------------------------|--------------------------|------------------|--------------|----------------|------|------|
-|                                                              |                          | フランダースの犬 | 銀河鉄道の夜 | 押絵と旅する男 | 合計 | 平均 |
-| koheiduck/bert-japanese-finetuned-sentiment                  | ー                       | 8.5              | 8.3          | 18.1           | 34.9 | 11.6 |
-| A-Funakoshi/bert-finetuned-multilingual-sentiments           | なし                     | 9.6              | 9.3          | 12.2           | 31.1 | 10.4 |
-| A-Funakoshi/bert-finetuned-multilingual-sentiments-adamw     | あり                     | 11.9             | 11.0         | 16.8           | 39.7 | 13.2 |
-| A-Funakoshi/bert-finetuned-multilingual-sentiments-adafactor | あり                     | 14.0             | 8.9          | 14.3           | 37.3 | 12.4 |
-| A-Funakoshi/bert-base-japanese-v3-wrime-sentiment            | なし                     | 7.95             | 7.19         | 19.2           | 34.3 | 11.4 |
-| A-Funakoshi/bert-base-japanese-v3-wrime-v1                   | あり                     | 8.4              | 7.9          | 16.9           | 33.2 | 11.1 |
+|                                                          |                          | 作品名           | 　           | 　             | 　       | 　      |
+|----------------------------------------------------------|--------------------------|------------------|--------------|----------------|----------|---------|
+| モデル                                                   | ハイパーパラメータ最適化 | フランダースの犬 | 銀河鉄道の夜 | 押絵と旅する男 | 合計     | 平均    |
+| koheiduck/bert-japanese-finetuned-sentiment              | ー                       | 8.2              | 9.5          | 19.3           | 37.0     | 12.3    |
+| **A-Funakoshi/bert-multilingual-sentiments-base**        | **なし**                 | **9.8**          | **10.5**     | **9.3**        | **29.7** | **9.9** |
+| A-Funakoshi/bert-finetuned-multilingual-sentiments-adamw | あり                     | 9.1              | 10.8         | 21.1           | 41.0     | 13.7    |
+| A-Funakoshi/bert-wrime-base                              | なし                     | 9.0              | 8.6          | 19.2           | 36.8     | 12.3    |
+| A-Funakoshi/bert-base-japanese-v3-wrime-v2               | あり                     | 8.2              | 8.9          | 19.5           | 36.5     | 12.2    |
