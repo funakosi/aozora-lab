@@ -5,7 +5,7 @@
 untrack
 
 # nohup.out
-nohup.out
+nohup*
 
 # 以下のファイルは対象外
 *.hdf5

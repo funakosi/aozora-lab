@@ -44,6 +44,8 @@ def get_score(tokenizer, model, text, truncation=True):
         label = torch.max(output.logits, dim=1)
         value = label.values.item()
         index = label.indices.item()
+    if (value < 0):
+        print(f'<<< logit is minus. [{text}:{model.config.id2label[index]}:{value}] >>>')
     logit_value = value * coef_array[index]
     pred_value = torch.max(prediction).item() * coef_array[index]
     return logit_value, pred_value
