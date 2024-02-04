@@ -90,7 +90,7 @@ def get_all_score(list_path, line_num=500, log=False):
         if not exist:
             continue
         mt = datetime.datetime.fromtimestamp(os.path.getmtime(score_path)) # 更新日付取得
-        if mt.month != 11:  # 仮
+        if mt.month != 12:  # 仮
             continue
         print(score_path, mt)
         df = pd.read_csv(score_path)
@@ -113,6 +113,6 @@ df_score
 
 # %%
 # スコア値を保存
-save_path = 'data/all_score_1124.csv'
+save_path = 'data/all_score_1205.csv'
 df_score.to_csv(save_path) # 必要に応じて実行
 

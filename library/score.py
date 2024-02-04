@@ -46,9 +46,12 @@ def get_score(tokenizer, model, text, truncation=True):
         index = label.indices.item()
     if (value < 0):
         print(f'<<< logit is minus. [{text}:{model.config.id2label[index]}:{value}] >>>')
-    logit_value = value * coef_array[index]
-    pred_value = torch.max(prediction).item() * coef_array[index]
-    return logit_value, pred_value
+    logit_value = value
+    pred_value = torch.max(prediction).item()
+    logit_score = value * coef_array[index]
+    pred_score = pred_value * coef_array[index]
+    label_name = model.config.id2label[index].upper()
+    return logit_value, pred_value, logit_score, pred_score, label_name
 
 # 小説データのテキストを取得
 """
@@ -77,17 +80,30 @@ Arg:
 Returns:
     data frame
 """
-def get_novel_score(tokenizer, model, file_path, skip_row=1, truncation=True):
+def get_novel_score(tokenizer, model, file_path, skip_row=1, truncation=True, alignment=True):
     # df = pd.read_csv(file_path)
     df = get_novel_text(file_path, skip_row)
-    logit_score, pred_score = [], []
+    logit_value_list, pred_value_list = [], []
+    logit_score_list, pred_score_list, label_name_list = [], [], []
     for i, text in enumerate(tqdm(df['text'])):
-        logit, pred = get_score(tokenizer, model, text, truncation)
-        logit_score.append(logit)
-        pred_score.append(pred)
+        logit_value, pred_value, logit_score, pred_score, label_name = get_score(tokenizer, model, text, truncation)
+        logit_value_list.append(logit_value)
+        pred_value_list.append(pred_value)
+        logit_score_list.append(logit_score)
+        pred_score_list.append(pred_score)
+        label_name_list.append(label_name)
 
-    df['logit_score'] = logit_score
-    df['pred_score'] = pred_score
+    df['logit_value'] = logit_value_list
+    df['pred_value'] = pred_value_list
+    df['logit_score'] = logit_score_list
+    df['pred_score'] = pred_score_list
+    df['label_name'] = label_name_list
+    # logitが負の場合に対応
+    diff = abs(df[df['logit_value']<0]['logit_value'].min())
+    if diff > 0 and alignment:
+        print('<< execute alignment. >>')
+        df['logit_score'] = df['logit_score'] +  df['label_name'].apply(lambda d: diff if d != 'NEUTRAL' else 0)
+
     return df
 
 # 指定されたwindowサイズで感情スコアの平均値を取得
